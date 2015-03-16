@@ -1,0 +1,45 @@
+// 
+public class JdbcPlainTest {
+
+  private String DB_URL="jdbc:mysql://localhost:3306/JSDATA";
+  private final String USER_NAME = "XXXX";
+  private final String PASSWORD = "XXXX";
+
+  private Connection createConnection() {
+    Connection conn = null;
+    try {
+      Class.forName("com.mysql.jdbc.Driver");
+      conn = 
+         DriverManager.getConnection(DB_URL, USER_NAME,PASSWORD);
+
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return conn;
+  }
+
+  private void query() {
+    ResultSet rs = null;
+    Statement stmt = null;
+    Connection conn = createConnection();
+
+    try {
+      stmt = conn.createStatement();
+      rs = stmt.executeQuery("SELECT * FROM TRADES");
+
+      while (rs.next())
+        System.out.println(rs.getString(1));
+      } catch (SQLException e) {
+        e.printStackTrace();
+      } finally {
+        try {
+          rs.close();
+          stmt.close();
+          conn.close();
+        } catch (SQLException ex) {
+          e.printStackTrace();
+        }
+     }
+  }
